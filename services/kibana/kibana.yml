@@ -1,0 +1,6 @@
+## Default Kibana configuration from kibana-docker.
+server.port: 5601
+server.host: "0.0.0.0"
+elasticsearch.hosts: ["http://elasticsearch:9200"]
+kibana.autocompleteTerminateAfter: 100000000
+kibana.autocompleteTimeout: 1000000

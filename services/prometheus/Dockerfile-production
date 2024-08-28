@@ -1,0 +1,4 @@
+FROM armdocker.rnd.ericsson.se/dockerhub-ericsson-remote/prom/prometheus:v2.6.1
+
+COPY services/prometheus/rules.yml /etc/prometheus/rules.yml
+COPY services/prometheus/prometheus-production.yml /etc/prometheus/prometheus.yml

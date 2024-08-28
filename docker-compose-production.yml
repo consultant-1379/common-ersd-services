@@ -1,0 +1,64 @@
+version: '2'
+
+services:
+  prometheus:
+    image: armdocker.rnd.ericsson.se/proj_openstack_tooling/ersd_prometheus:latest
+    volumes:
+      - /export/PS/common_ersd_prometheus:/prometheus
+    ports:
+      - "9090:9090"
+
+  grafana:
+    image: armdocker.rnd.ericsson.se/proj_openstack_tooling/ersd_grafana:latest
+    environment:
+      - GF_SERVER_DOMAIN=${HOSTNAME}
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus
+    links:
+    - prometheus
+    - mailer
+
+  mailer:
+    image: armdocker.rnd.ericsson.se/proj_openstack_tooling/ersd_mailer:latest
+    ports:
+      - "3001:3001"
+  
+  kibana:
+    image: armdocker.rnd.ericsson.se/proj_openstack_tooling/ersd_kibana:latest
+    ports:
+      - 5601:5601
+    environment:
+      - "LOGGING_QUIET=true"
+    links:
+      - elasticsearch
+    
+      
+  elasticsearch:
+    image: armdocker.rnd.ericsson.se/proj_openstack_tooling/ersd_elasticsearch:latest
+    ports:
+      - "9200:9200"
+    volumes:
+      - "/usr/share/elasticsearch/data"
+    environment:
+      - cluster.name=elasticsearch-cluster
+      - node.name=master-node-1
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
+      - cluster.initial_master_nodes=master-node-1
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+
+  nodeExporter:
+    image: armdocker.rnd.ericsson.se/dockerhub-ericsson-remote/prom/node-exporter:v0.17.0
+
+  cAdvisor:
+    image: armdocker.rnd.ericsson.se/dockerhub-ericsson-remote/google/cadvisor:v0.32.0
+    volumes:
+    - /:/rootfs:ro
+    - /var/run:/var/run:rw
+    - /sys:/sys:ro
+    - /var/lib/docker/:/var/lib/docker:ro

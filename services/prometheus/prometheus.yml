@@ -1,0 +1,205 @@
+global:
+  scrape_interval: 5s
+  external_labels:
+    monitor: 'local-monitor'
+
+rule_files:
+  - "rules.yml"
+
+scrape_configs:
+  - job_name: 'Prometheus'
+    metrics_path: /metrics
+    static_configs:
+    - targets: ['localhost:9090']
+
+  - job_name: 'EMT PROD Express'
+    scrape_interval: 30s
+    metrics_path: /api/metrics
+    static_configs:
+      - targets: ['atvts2493.athtem.eei.ericsson.se']
+      
+  - job_name: 'EMT PROD MongoDB'
+    scrape_interval: 30s
+    metrics_path: /mongo-exporter/metrics
+    static_configs:
+      - targets: ['atvts2493.athtem.eei.ericsson.se']
+
+  - job_name: 'EMT PROD Nginx'
+    scrape_interval: 30s
+    metrics_path: /metrics
+    static_configs:
+      - targets: ['atvts2493.athtem.eei.ericsson.se:9113']
+
+  - job_name: 'EMT PROD cAdvisor'
+    scrape_interval: 30s
+    metrics_path: /cadvisor/metrics
+    static_configs:
+      - targets: ['atvts2493.athtem.eei.ericsson.se']
+
+  - job_name: 'EMT PROD Node Exporter'
+    scrape_interval: 30s
+    metrics_path: /node-exporter/metrics
+    static_configs:
+      - targets: ['atvts2493.athtem.eei.ericsson.se']
+
+  - job_name: 'EMT STAG Express'
+    scrape_interval: 30s
+    metrics_path: /api/metrics
+    static_configs:
+      - targets: ['atvts3360.athtem.eei.ericsson.se']
+      
+  - job_name: 'EMT STAG MongoDB'
+    scrape_interval: 30s
+    metrics_path: /mongo-exporter/metrics
+    static_configs:
+      - targets: ['atvts3360.athtem.eei.ericsson.se']
+
+  - job_name: 'EMT STAG Nginx'
+    scrape_interval: 30s
+    metrics_path: /metrics
+    static_configs:
+      - targets: ['atvts3360.athtem.eei.ericsson.se:9113']
+
+  - job_name: 'EMT STAG cAdvisor'
+    scrape_interval: 30s
+    metrics_path: /cadvisor/metrics
+    static_configs:
+      - targets: ['atvts3360.athtem.eei.ericsson.se']
+
+  - job_name: 'EMT STAG Node Exporter'
+    scrape_interval: 30s
+    metrics_path: /node-exporter/metrics
+    static_configs:
+      - targets: ['atvts3360.athtem.eei.ericsson.se']
+
+  - job_name: 'KTT PROD Express'
+    scrape_interval: 30s
+    metrics_path: /api/metrics
+    static_configs:
+      - targets: ['atvts2496.athtem.eei.ericsson.se']
+      
+  - job_name: 'KTT PROD MongoDB'
+    scrape_interval: 30s
+    metrics_path: /mongo-exporter/metrics
+    static_configs:
+      - targets: ['atvts2496.athtem.eei.ericsson.se']
+
+  - job_name: 'KTT PROD Nginx'
+    scrape_interval: 30s
+    metrics_path: /metrics
+    static_configs:
+      - targets: ['atvts2496.athtem.eei.ericsson.se:9113']
+
+  - job_name: 'KTT PROD cAdvisor'
+    scrape_interval: 30s
+    metrics_path: /cadvisor/metrics
+    static_configs:
+      - targets: ['atvts2496.athtem.eei.ericsson.se']
+
+  - job_name: 'KTT PROD Node Exporter'
+    scrape_interval: 30s
+    metrics_path: /node-exporter/metrics
+    static_configs:
+      - targets: ['atvts2496.athtem.eei.ericsson.se']
+
+  - job_name: 'KTT STAG Express'
+    scrape_interval: 30s
+    metrics_path: /api/metrics
+    static_configs:
+      - targets: ['atvts2754.athtem.eei.ericsson.se']
+      
+  - job_name: 'KTT STAG MongoDB'
+    scrape_interval: 30s
+    metrics_path: /mongo-exporter/metrics
+    static_configs:
+      - targets: ['atvts2754.athtem.eei.ericsson.se']
+
+  - job_name: 'KTT STAG Nginx'
+    scrape_interval: 30s
+    metrics_path: /metrics
+    static_configs:
+      - targets: ['atvts2754.athtem.eei.ericsson.se:9113']
+
+  - job_name: 'KTT STAG cAdvisor'
+    scrape_interval: 30s
+    metrics_path: /cadvisor/metrics
+    static_configs:
+      - targets: ['atvts2754.athtem.eei.ericsson.se']
+
+  - job_name: 'KTT STAG Node Exporter'
+    scrape_interval: 30s
+    metrics_path: /node-exporter/metrics
+    static_configs:
+      - targets: ['atvts2754.athtem.eei.ericsson.se']
+
+  - job_name: 'AMT PROD Express'
+    scrape_interval: 30s
+    metrics_path: /api/metrics
+    static_configs:
+      - targets: ['atvts2462.athtem.eei.ericsson.se']
+      
+  - job_name: 'AMT PROD MongoDB'
+    scrape_interval: 30s
+    metrics_path: /mongo-exporter/metrics
+    static_configs:
+      - targets: ['atvts2462.athtem.eei.ericsson.se']
+
+  - job_name: 'AMT PROD Nginx'
+    scrape_interval: 30s
+    metrics_path: /metrics
+    static_configs:
+      - targets: ['atvts2462.athtem.eei.ericsson.se:9113']
+
+  - job_name: 'AMT PROD cAdvisor'
+    scrape_interval: 30s
+    metrics_path: /cadvisor/metrics
+    static_configs:
+      - targets: ['atvts2462.athtem.eei.ericsson.se']
+
+  - job_name: 'AMT PROD Node Exporter'
+    scrape_interval: 30s
+    metrics_path: /node-exporter/metrics
+    static_configs:
+      - targets: ['atvts2462.athtem.eei.ericsson.se']
+
+  - job_name: 'AMT STAG Express'
+    scrape_interval: 30s
+    metrics_path: /api/metrics
+    static_configs:
+      - targets: ['atvts2753.athtem.eei.ericsson.se']
+      
+  - job_name: 'AMT STAG MongoDB'
+    scrape_interval: 30s
+    metrics_path: /mongo-exporter/metrics
+    static_configs:
+      - targets: ['atvts2753.athtem.eei.ericsson.se']
+
+  - job_name: 'AMT STAG Nginx'
+    scrape_interval: 30s
+    metrics_path: /metrics
+    static_configs:
+      - targets: ['atvts2753.athtem.eei.ericsson.se:9113']
+
+  - job_name: 'AMT STAG cAdvisor'
+    scrape_interval: 30s
+    metrics_path: /cadvisor/metrics
+    static_configs:
+      - targets: ['atvts2753.athtem.eei.ericsson.se']
+
+  - job_name: 'AMT STAG Node Exporter'
+    scrape_interval: 30s
+    metrics_path: /node-exporter/metrics
+    static_configs:
+      - targets: ['atvts2753.athtem.eei.ericsson.se']
+
+  - job_name: 'METRICS PROD cAdvisor'
+    scrape_interval: 30s
+    metrics_path: /metrics
+    static_configs:
+      - targets: ['cAdvisor:8080']
+
+  - job_name: 'METRICS PROD Node Exporter'
+    scrape_interval: 30s
+    metrics_path: /metrics
+    static_configs:
+      - targets: ['nodeExporter:9100']

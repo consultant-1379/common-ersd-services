@@ -1,0 +1,48 @@
+pipeline {
+    agent {
+        node {
+            label SLAVE
+        }
+    }
+
+    stages {
+        stage('Bump Version') {
+            steps {
+                sh "sh release/bump_version.sh"
+                script {
+                    IMAGE_VERSION = readFile('artifact.properties').trim()
+                }
+            }
+        }
+        stage('Build and Push Grafana Service') {
+            steps {
+                sh "sh release/build_and_push_service.sh \"ersd_grafana\" \"services/grafana/Dockerfile-production\" \"${IMAGE_VERSION}\" \"${params.GRAFANA_VIEWER_PASSWORD}\" \"${params.GRAFANA_ADMIN_PASSWORD}\""               
+            }
+        }
+        stage('Build and Push Prometheus Service') {
+            steps {
+                sh "sh release/build_and_push_service.sh \"ersd_prometheus\" \"services/prometheus/Dockerfile-production\" \"${IMAGE_VERSION}\""
+            }                
+        }    
+        stage('Build and Push Mailer Service') {
+            steps {
+                sh "sh release/build_and_push_service.sh \"ersd_mailer\" \"services/mailer/Dockerfile-production\" \"${IMAGE_VERSION}\""
+            }                
+        }
+        stage('Build and Push Kibana Service') {
+            steps {
+                sh "sh release/build_and_push_service.sh \"ersd_kibana\" \"services/kibana/Dockerfile-production\" \"${IMAGE_VERSION}\""
+            }                
+        }    
+        stage('Build and Push Elasticsearch Service') {
+            steps {
+                sh "sh release/build_and_push_service.sh \"ersd_elasticsearch\" \"services/elasticsearch/Dockerfile-production\" \"${IMAGE_VERSION}\""
+            }                
+        }        
+        stage('Cleanup unused Docker data') {
+            steps {
+                sh "docker system prune -a -f"
+            }
+        }   
+    }
+}

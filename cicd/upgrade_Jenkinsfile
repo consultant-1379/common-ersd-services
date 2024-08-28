@@ -1,0 +1,13 @@
+node(params.SLAVE) {
+  def remote = [:]
+  remote.name = 'production_vm'
+  remote.host = params.PRODUCTION_VM
+  remote.user = params.USERNAME
+  remote.password = params.PASSWORD
+  remote.allowAnyHosts = true
+
+    stage ('Upgrading production VM') {
+        sshCommand remote: remote, command: "sh upgrade.sh"
+    }
+
+}

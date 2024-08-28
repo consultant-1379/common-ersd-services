@@ -1,0 +1,10 @@
+groups:
+  - name: containers_up
+    rules:
+    - record: container_last_seen:count
+      expr: count(count by (name) (container_last_seen{job=~".*cAdvisor", name=~".*_1"}))
+
+  - name: targets_up
+    rules:
+    - record: targets_up
+      expr: sum(up)

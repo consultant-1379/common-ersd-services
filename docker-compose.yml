@@ -1,0 +1,77 @@
+version: '2'
+
+services:
+  prometheus:
+    build: services/prometheus
+    ports:
+      - "9090:9090"
+
+  grafana:
+    build: 
+      context: services/grafana
+      args:
+        - GRAFANA_VIEWER_PASSWORD=${GRAFANA_VIEWER_PASSWORD}
+        - GRAFANA_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD}
+    environment:
+      - GF_SERVER_DOMAIN=localhost
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus
+    links:
+    - prometheus
+    - mailer
+
+  mailer:
+    build: services/mailer
+    environment:
+      - NODE_ENV=DEV
+    ports:
+      - "3001:3001"
+
+  kibana:
+    build:
+      context: services/kibana
+      dockerfile: Dockerfile
+    ports:
+      - 5601:5601
+    environment:
+      - "LOGGING_QUIET=true"
+    links:
+      - elasticsearch
+    
+      
+  elasticsearch:
+    build:
+      context: services/elasticsearch
+      dockerfile: Dockerfile
+    ports:
+      - "9200:9200"
+    volumes:
+      - "/usr/share/elasticsearch/data"
+    environment:
+      - cluster.name=elasticsearch-cluster
+      - node.name=master-node-1
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - cluster.initial_master_nodes=master-node-1
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+  
+  nodeExporter:
+    image: armdocker.rnd.ericsson.se/dockerhub-ericsson-remote/prom/node-exporter:v0.17.0
+
+  cAdvisor:
+    image: armdocker.rnd.ericsson.se/dockerhub-ericsson-remote/google/cadvisor:v0.32.0
+    volumes:
+    - /:/rootfs:ro
+    - /var/run:/var/run:rw
+    - /sys:/sys:ro
+    - /var/lib/docker/:/var/lib/docker:ro
+        
+networks:
+  default:
+    external:
+      name: environmentmanagementtool_default
